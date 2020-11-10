@@ -66,7 +66,7 @@ function inning(){
     return Math.floor(Math.random() * Math.ceil(3));
 
 }
-console.log(inning())
+console.log(inning(),"score per inning")
 
 /* Task 3: finalScore()
 Use the finalScore function below to do the following:
@@ -81,13 +81,13 @@ For example: invoking finalScore(inning, 9) might return this object:
 }
 */ 
 
-function finalScore(inningCB, inningsPlayed){
+function finalScore(inning, inningsPlayed){
      
   let home = 0;
   let away = 0;
   for(let i=0; i<= inningsPlayed; i++){
-    home += inningCB()
-    away += inningCB()
+    home += inning()
+    away += inning()
   }
   return{
     Home: home,
@@ -101,11 +101,11 @@ console.log(finalScore(inning,9),"final Score")
 // the function should take the inning function as an argument 
 // it should return an object with with a score for home and a score for away that that populates from invoking the inning callback. */
 
-function getInningScore(inningCB) {
+function getInningScore(inning) {
   
   return{
-    Home: inningCB(),
-    Away: inningCB(),
+    Home: inning(),
+    Away: inning(),
   }
 }
 console.log(getInningScore(inning,9),"getting inning score")
@@ -163,17 +163,33 @@ Use the scoreboard function below to do the following:
   */
 
 
-function scoreboard(getInningScoreCB, inningCB, inningsPlayed) {
+function scoreboard(getInningScore, inning, inningsPlayed) {
   const totalGame = [];
   let home = 0;
   let away = 0;
+  let inningNum = 1;
   
-  for(let i = 0; i < 9; i++){
-    const currentScore = getInningScoreCB(inningCB, inningsPlayed)
+  for(let i = 0; i < inningsPlayed; i++){
+    const currentScore = getInningScore(inning)
     home = home + currentScore.Home
     away = away + currentScore.Away
-    totalGame.push(`Inning ${i + 1}: Away ${currentScore.Away} - Home ${currentScore.Home}`);
+    inningNum++
+    totalGame.push(`Inning ${i + 1}: Away ${away} - Home ${home}`);
   }
+  if (home != away){
+    totalGame.push(`Final Score: Away ${away} -  Home ${home}`);
+  }
+  else if (home === away){
+    totalGame.push(`This game will require extra innings: Away ${away} - Home ${home}`);
+    // while (home === away){
+    //   const currentScore = getInningScore(inning)
+    // home = home + currentScore.Home
+    // away = away + currentScore.Away
+    // totalGame.push(`Inning ${inningNum}: Away ${away} - Home ${home}`);
+    // }
+    totalGame.push(`Final Score: Away ${away} -  Home ${home}`);
+  }
+  console.log(home, away);
   return totalGame;
 } 
 console.log(scoreboard(getInningScore, inning, 9)) 
